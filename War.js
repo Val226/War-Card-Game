@@ -34,50 +34,54 @@
  *      - An array to store all the suits (See Above)
  */
 
+
 class Deck {
     constructor() {
-    this.deck = [];
-    this.ranks = [
-        "Ace",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "Jack",
-        "Queen",
-        "King"
-    ];
-    this.suits = [
-        "Spades ⚔️",
-        "Hearts 💜",
-        "Diamonds 💎",
-        "Clubs ♣️"
-    ];
-}}
-// Let's create the deck!
-createDeck(); {
-    for (let i = 0; i < this.suits.length; i++) {   // For the suits
-        for (let b = 0; b < this.ranks.length; b++) { // Iterate through each rank
-            let card = {
-                name: `${this.ranks[b]} of ${this.suits[b]}` ,
-                value: b + 1
-            };
-        this.deck.push(card);
-    };
-}
-}
-shuffleDeck(); {
-    for (let i = deck.length - 1; i > 0; i--) {
-        let b = Math.floor(Math.random() * (i + 1));
-        [this.deck[i], this.deck[b]] = [this.deck[b], this.deck[i]];
-    };
-}
+        this.deck = [];
+        this.ranks = [
+            "Ace", 
+            "2", 
+            "3", 
+            "4", 
+            "5", 
+            "6", 
+            "7", 
+            "8", 
+            "9", 
+            "10", 
+            "Jack", 
+            "Queen", 
+            "King"
+        ];
+        this.suits = [
+            "Spades ⚔️", 
+            "Hearts 💜", 
+            "Diamonds 💎", 
+            "Clubs ♣️"
+        ];
+        this.createDeck(); // Create the deck upon initialization
+        this.shuffleDeck(); // Shuffle the deck upon initialization
+    }
+// Time to create the deck!
+    createDeck() {
+        for (let suit of this.suits) {   // For the suits
+            for (let rankIndex = 0; rankIndex < this.ranks.length; rankIndex++) { // Iterate through each rank
+                let card = {
+                    name: `${this.ranks[rankIndex]} of ${suit}`,
+                    value: rankIndex + 1
+                };
+                this.deck.push(card);
+            }
+        }
+    }
 
+    shuffleDeck() {
+        for (let i = this.deck.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+        }
+    }
+}
 /**
  * Players, Score & Hand
  * Needs:
@@ -91,22 +95,20 @@ shuffleDeck(); {
  *        - Score
  *        - Hand 
  */
-
 class Game {
     constructor() {
+        this.deck = new Deck();
         this.player1 = {
-            name: Val,
+            name: "Val",
             score: 0,
             hand: []
         };
         this.player2 = {
-            name: Connor,
+            name: "Connor",
             score: 0,
             hand: []
         };
     }
-}
-
 /**
  * Method to play the game:
  * - Passout cards to each player
@@ -114,59 +116,51 @@ class Game {
  * - Award points based on the card value
  * - Who is the winner?
  */
+    playWar() {
+        while (this.deck.deck.length > 0) {
+            this.player1.hand.push(this.deck.deck.shift());
+            this.player2.hand.push(this.deck.deck.shift());
+        }
 
-playWar(); {
-    const deck = new Deck;
-    deck.createDeck();
-    deck.shuffleDeck();
+        for (let i = 0; i < this.player1.hand.length; i++) {
+            this.awardPoints(i);
+        }
 
-    while (deck.deck.length !== 0) {
-        this.player1.hand.push(deck.deck.shift());
-        this.player2.hand.push(deck.deck.shift());
-    };
-}
+        this.declareWinner();
+    }
+// Let's Play!
+    awardPoints(index) {
+        const card1 = this.player1.hand[index];
+        const card2 = this.player2.hand[index];
 
-const deck = new Deck;
-deck.createDeck();
-deck.shuffleDeck();
+        console.log(`Player 1 Card: ${card1.name}`);
+        console.log(`Player 2 Card: ${card2.name}`);
 
-// Let's Play War!
-for (let i = 0; i < this.player1.hand.length; i++) {
-    // Award points based off cards played
-    if (this.player1.hand[i].value > this.player2.hand[i].value) {
-        this.player1.score ++;
-        console.log( `
-            Player 1 Card: ${this.player1.hand[i].name}
-            Player 2 Card: ${this.player2.hand[i].name}
-            Player 1 wins a point!
-            Current Score: Player 1 ${this.player1.score}, Player 2: ${this.player2.score}
-            `)
-    } else if (this.player2.hand[i].value > this. player1.hand[i].value) {
-        console.log( `
-            Player 1 Card: ${this.player1.hand[i].name}
-            Player 2 Card: ${this.player2.hand[i].name}
-            Player 2 wins a point!
-            Current Score: Player 1 ${this.player1.score}, Player 2: ${this.player2.score}
-            `)
-    } else {
-        console.log( `
-            Player 1 Card: ${this.player1.hand[i].name}
-            Player 2 Card: ${this.player2.hand[i].name}
-            Tie: No points are awarded
-            Current Score: Player 1 ${this.player1.score}, Player 2: ${this.player2.score}
-            `)
+        if (card1.value > card2.value) {
+            this.player1.score++;
+            console.log('Player 1 wins a point!');
+        } else if (card2.value > card1.value) {
+            this.player2.score++;
+            console.log('Player 2 wins a point!');
+        } else {
+            console.log('Tie: No points are awarded');
+        }
+
+        console.log(`Current Score: Player 1 ${this.player1.score}, Player 2: ${this.player2.score}\n`);
+    }
+
+    // Who is the winner?
+    declareWinner() {
+        if (this.player1.score > this.player2.score) {
+            console.log('Player 1 Wins!');
+        } else if (this.player1.score < this.player2.score) {
+            console.log('Player 2 Wins!');
+        } else {
+            console.log('It\'s a Tie!');
+        }
     }
 }
 
-// Who wins?
-
-if (this.player1.score > this.player2.score) {
-    console.log('Player 1 Wins!');
-} else if (this.player1.score < this.player2.score) {
-    console.log('Player 2 Wins!');
-} else {
-    console.log('Its a Tie!');
-}
-
-const game = new Game;
+// Let's Play War!
+const game = new Game();
 game.playWar();
