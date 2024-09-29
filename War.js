@@ -146,7 +146,7 @@ class Game {
             console.log('Tie: No points are awarded');
         }
 
-        console.log(`Current Score: Player 1 ${this.player1.score}, Player 2: ${this.player2.score}\n`);
+        console.log(`Current Score: Player 1: ${this.player1.score}, Player 2: ${this.player2.score}\n`);
     }
 
     // Who is the winner?
